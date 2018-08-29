@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <!-- bootstrap -->
+  <link rel="stylesheet" type="text/css" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+  <!-- font awesome -->
+  <link rel="stylesheet" type="text/css" 
+    href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+  <!-- custom css -->
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="container">
+      <header>
+        <h1>My TodoList</h1>
+      </header>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">待辦事項</span>
+        </div>
+        <input type="text" class="form-control" placeholder="準備要做的任務" 
+          v-model='newTodo' @keyup.enter="addTodo"> 
+        <!-- v-model='newTodo' 輸入新增待辦事項資訊 -->
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" @click='addTodo'>新增</button>
+          <!-- @click='addTodo' 觸發click事件 -->
+        </div>
+      </div>
+      <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link" :class="{'active':visibility == 'all'}" 
+                @click="visibility = 'all'" href="#">全部</a> 
+              <!-- 當visibility == 'all'時增加active的class。點擊此按鈕時，設定visibility = 'all' --> 
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" :class="{'active':visibility == 'active'}" 
+                @click="visibility = 'active'" href="#">進行中</a> 
+              <!-- 當visibility == 'active'時增加active的class。點擊此按鈕時，設定visibility = 'active' --> 
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" :class="{'active':visibility == 'completed'}" 
+                @click="visibility = 'completed'" href="#">已完成</a>
+              <!-- 當visibility == 'completed'時增加active的class。點擊此按鈕時，設定visibility = 'completed' -->
+            </li>
+          </ul>
+        </div>
+        <ul class="list-group list-group-flush text-left">
+          <li class="list-group-item" v-for="(item,key) in filteredTodo" 
+            @dblclick="editTodo(item)">
+            <div class="d-flex" v-if="item.id !== cacheTodo.id"> 
+              <!-- 當item.id !== cacheTodo.id時顯示一般的todolist內容 --> 
+              <!-- 因為當dblclick時editTodo function會去記錄當下點擊的項目到cacheTodo裡，就可以用這去判斷要不要顯示編輯用的input，也因此編輯用的input只會顯示一個！ -->
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" v-model="item.completed" 
+                  :id="item.id">
+                <!-- v-model="item.completed" 更改事項狀態 -->
+                <label class="form-check-label" 
+                :class="{'completed':item.completed}"
+                :for="item.id"> 
+                <!-- 增加completed的class當item.completed=true時 -->
+                  {{ item.title }}
+                </label>
+              </div>
+              <button type="button" class="close ml-auto" @click="removeTodo(item.id)" 
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            
+            <input type="text" class="form-control" v-if="item.id === cacheTodo.id" 
+              v-model="cacheTitle" @blur="cancleEdit" @keyup.esc="cancleEdit" 
+              @keyup.enter="doneEdit(item)"> 
+            <!-- 當item.id === cacheTodo.id時顯示此編輯用的input -->
+          </li>    
+        </ul>
+        <div class="card-footer d-flex justify-content-between">
+          <span>還有 {{totalActive}} 筆任務未完成</span>
+          <a href="#" @click="deleteAll">清除所有任務</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- vue & jquery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- custom js -->
+  <script src="js/script.js"></script>
+</body>
+</html> 

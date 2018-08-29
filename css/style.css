@@ -1,0 +1,36 @@
+/*global*/
+* {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Open Sans', 'Barlow Condensed', sans-serif;
+}
+body {
+  font-size: 16px;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+}
+.container {
+  display: block;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.clearfix:after, .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.row {
+  margin: 0 -10px;
+}
+
+
+.completed {
+  text-decoration: line-through
+}
+header {
+	margin: 30px 0;
+	text-align: center;
+}
